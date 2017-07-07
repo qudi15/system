@@ -1,0 +1,16 @@
+{
+  "name": "system",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Eddy <qudi_17@163.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/systemjs": "^0.20.2",
+    "systemjs": "^0.20.14",
+    "typescript": "^2.4.1"
+  }
+}
