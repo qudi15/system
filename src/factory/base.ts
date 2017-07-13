@@ -1,9 +1,31 @@
-import Base from "../base/base";
-import {ModuleBase} from "../base/moduleBase";
+import { Base } from "../base/index";
 
-export default class FactoryBase extends Base {
+/**
+ * Class FactoryBase
+ * @extends Base
+ */
+export class FactoryBase extends Base {
     cache: Object;
-    put(namespance: any): any {}
+    instanceCache: Object;
+    put(namespance: any, parent?: any): any {}
     del(){}
     clear(){}
+
+    constructor(){
+        super();
+        this.cache = {};
+        this.instanceCache = {};
+    }
+
+    /**
+     * @public
+     * @param {String} id - id
+     * @return {Object}
+     */
+    get(id: string){
+        return {
+            instance: (<any>this.instanceCache)[id],
+            constructor: (<any>this.cache)[id]
+        };
+    }
 }

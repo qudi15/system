@@ -1,20 +1,45 @@
+
+import { Base } from "./base";
+
 /**
- * ComponentBase
- * Author: Eddy
- * Last modified: 2017.7.6
+ * @decorator Component
  */
-
-import Base from "./base";
-
-export function Component(options: Object){
-    return function(constructor: Function){
+export function Component(options : Object) {
+    return function (constructor : Function) {
         constructor.prototype.options = options;
     }
 }
 
+/**
+ * Class ComponentBase
+ * @extends Base
+ * @description base component class
+ */
 export class ComponentBase extends Base {
-    beforeMount(){}
-    Mounted(){}
-    BeforeUpdate(){}
-    Updated(){}
+    name : string;
+    /**
+     * Component life cycle hook.
+     */
+    beforeMount() {}
+    /**
+     * Component life cycle hook.
+     */
+    mounted() {}
+    /**
+     * Component life cycle hook.
+     */
+    beforeUpdate() {}
+    /**
+     * Component life cycle hook.
+     */
+    updated() {}
+    /**
+     * Component life cycle hook.
+     */
+    activated() {}
+    /**
+     * Component life cycle hook.
+     */
+    deactivated() {}
+
 }

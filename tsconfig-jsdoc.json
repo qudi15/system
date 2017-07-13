@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "module": "es6",
+        "noImplicitAny": true,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "outDir": "doc",
+        "sourceMap": true,
+        "types": [
+            "systemjs"
+        ],
+        "baseUrl": ".",
+        "lib": ["dom", "es2015.promise", "es5", "es2015"],
+        "target": "es2015",
+        "experimentalDecorators": true
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}

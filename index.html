@@ -5,9 +5,14 @@
     <title>Document</title>
 </head>
 <body>
+    <div id="app"></div>
     <script src="node_modules/systemjs/dist/system.js"></script>
     <script>
     SystemJS.config({
+        map: {
+            systemjs: 'node_modules/systemjs/dist/system.js',
+            app: 'dist/app/app.module.js'
+        },
         packages: {
             '.': {
                 defaultExtension: 'js'
@@ -19,9 +24,9 @@
     <script>
         Promise.all([
             SystemJS.import('dist/platform/broswer'),
-            SystemJS.import('dist/app/app.module')
-        ]).then(function([{ broswerPlatform }, { default: app }]){
-            broswerPlatform().bootStrapModule(app);
+            // SystemJS.import('dist/app/app.module')
+        ]).then(function([{ broswerPlatform }]){
+            broswerPlatform().bootStrapModule('app');
         });
     </script>
 </body>

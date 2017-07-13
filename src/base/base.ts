@@ -1,15 +1,26 @@
+
 /**
- * Base 
- * Author: Eddy
- * Last modified: 2017.7.6
+ * Class Base.
+ * @class
+ * @classdesc base of every class
  */
-export default class Base {
+export class Base {
+    /**
+     * life cycle hook.
+     */
+    beforeCreate(){}
+    /**
+     * life cycle hook.
+     */
+    created(){}
 
-    onBeforeCreate(){}
+    /**
+     * life cycle hook.
+     */
+    beforeDestroy(){}
 
-    onCreated(){}
-
-    onBeforeDestory(){}
-
-    onDestroyed(){}
+    /**
+     * life cycle hook.
+     */
+    destroyed(){}
 }

@@ -4,13 +4,22 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "clean": "rm -rf dist && rm -rf doc",
+    "doc": "npm run clean && tsc -p tsconfig-jsdoc.json && jsdoc -c jsdoc.json"
   },
   "author": "Eddy <qudi_17@163.com>",
   "license": "MIT",
   "dependencies": {
     "@types/systemjs": "^0.20.2",
+    "jsdoc": "^3.5.0",
     "systemjs": "^0.20.14",
-    "typescript": "^2.4.1"
+    "tslint": "^5.5.0",
+    "tslint-eslint-rules": "^4.1.1",
+    "typescript": "^2.4.1",
+    "vue": "^2.3.4"
+  },
+  "devDependencies": {
+    "vrsource-tslint-rules": "^5.1.0"
   }
 }

@@ -1,8 +1,12 @@
-import * as systemjs from "systemjs";
+/**
+ * @module system/loader
+ */
 
-export default class Loader {
-    config(){}
-    load(namespace: string){
-        return systemjs.import(namespace);
-    }
-}
+export { 
+    /**
+     * Loader
+     * See {@link SystemJsLoader}
+     */
+    SystemJsLoader as Loader 
+} from "./systemjsLoader";
+

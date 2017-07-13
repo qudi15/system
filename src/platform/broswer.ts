@@ -1,9 +1,10 @@
-import Loader from "../loader";
-import VueModuleFactory from "../factory/moduleFactory/vueModuleFactory";
-import VueComponentFactory from "../factory/componentFactory/vueComponentFactory";
-import StoreFactory from "../factory/storeFactory/storeFactoryBase";
+import { Loader } from "../loader/index";
 
-import { ModuleBase } from '../base/moduleBase';
+import { ModuleFactory, ComponentFactory, ServiceFactory, StoreFactory } from "../factory/index";
+
+import { ModuleBase } from '../base/index';
+
+console.log(1);
 
 function addScript(src: string){
     return new Promise<void>((resolve: Function, reject: Function) => {
@@ -19,24 +20,32 @@ function addScript(src: string){
 }
 
 export function broswerPlatform(){
-    var ModuleFactoryInstance: VueModuleFactory;
+    var ModuleFactoryInstance: ModuleFactory;
     var StoreFactoryInstance: StoreFactory;
-    var ComponentFactoryInstance: VueComponentFactory;
+    var ComponentFactoryInstance: ComponentFactory;
+    var ServiceFatoryInstance: ServiceFactory;
     var LoaderInstance: Loader;
 
     function instantiation(): void{
         (!LoaderInstance) && (LoaderInstance = new Loader());
-        (!ComponentFactoryInstance) && (ComponentFactoryInstance = new VueComponentFactory());
-        if(!ModuleFactoryInstance){
-            ModuleFactoryInstance = new VueModuleFactory(ComponentFactoryInstance, LoaderInstance);
-        };
+        (!ComponentFactoryInstance) && (ComponentFactoryInstance = new ComponentFactory());
+        (!ServiceFatoryInstance) && (ServiceFatoryInstance = new ServiceFactory());
         (!StoreFactoryInstance) && (StoreFactoryInstance = new StoreFactory());
+        if(!ModuleFactoryInstance){
+            ModuleFactoryInstance = new ModuleFactory(LoaderInstance, ComponentFactoryInstance, ServiceFatoryInstance, StoreFactoryInstance);
+        };
+    }
+
+    function loadModule(namespace: string){
+        return ModuleFactoryInstance.put(namespace).then(function(moduleInstance: ModuleBase){
+            ComponentFactoryInstance.boot((<any>moduleInstance).moduleView, '#app');
+        });
     }
 
     return {
         bootStrapModule(namespace: string){
             instantiation();
-            ModuleFactoryInstance.put(namespace);
+            loadModule(namespace);
         }
     };
 }
