@@ -1,6 +1,6 @@
-import { FactoryBase } from '../base';
+import { FactoryBase } from "../base";
 function checkModuleExists(id, cache) {
-    return typeof cache[id] == undefined;
+    return !!cache[id];
 }
 /**
  * Class ModuleFactoryBase
@@ -14,7 +14,7 @@ export class ModuleFactoryBase extends FactoryBase {
     /**
      * @public
      * @param {String} moduleId - Module Id
-     * @return {Promise<ModuleBase>}
+     * @return {Promise<IModuleConstructor>}
      */
     put(moduleId) {
         if (!checkModuleExists(moduleId, this.cache)) {
@@ -39,18 +39,18 @@ export class ModuleFactoryBase extends FactoryBase {
     createMainComponent(constructor) { }
     /**
      * @protected
-     * @param {Function} constructor - Module constructor.
-     * @return {Promise<ModuleBase[]>}
+     * @param {IModuleConstructor} constructor - Module constructor.
+     * @return {Promise<IModule[]>}
      */
     handleDeps(constructor) {
-        var options = constructor.prototype.options;
-        var deps = options.modules || [];
+        const options = constructor.prototype.options;
+        const deps = options.modules || [];
         return Promise.all(deps.map((namespace) => this.put(namespace)));
     }
     /**
      * @protected
      * @param {String} moduleId - Module Id
-     * @return {Promise<ModuleBase>}
+     * @return {Promise<IModuleConstructor>}
      */
     loadModule(moduleId) {
         return this.loader.load(moduleId).then((output) => output.default);

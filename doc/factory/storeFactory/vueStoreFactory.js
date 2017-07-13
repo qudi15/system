@@ -1,4 +1,4 @@
-import { StoreFactoryBase } from './storeFactoryBase';
+import { StoreFactoryBase } from "./storeFactoryBase";
 /**
  * Class VueStoreFactory
  * @extends StoreFactoryBase
@@ -10,9 +10,9 @@ export class VueStoreFactory extends StoreFactoryBase {
      * @param {Function} constructor - Store constructor.
      */
     createStore(moduleId, constructor) {
-        let ins = new constructor();
+        const ins = new constructor();
         this.cache[moduleId] = Promise.resolve(ins);
-        this.instanceCache[moduleId] = Promise.resolve(new window['Vuex'].Store(ins));
+        this.instanceCache[moduleId] = Promise.resolve(new window.Vuex.Store(ins));
         return this.instanceCache[moduleId];
     }
 }

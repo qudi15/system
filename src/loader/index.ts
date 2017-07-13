@@ -2,11 +2,10 @@
  * @module system/loader
  */
 
-export { 
+export {
     /**
      * Loader
      * See {@link SystemJsLoader}
      */
-    SystemJsLoader as Loader 
+    SystemJsLoader as Loader
 } from "./systemjsLoader";
-

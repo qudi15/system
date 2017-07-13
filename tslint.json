@@ -1,0 +1,21 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "no-empty": false,
+    "trailing-comma": [
+      false
+    ],
+    "only-arrow-functions": [
+      false
+    ],
+    "no-empty-interface": false,
+    "ban-types": false,
+    "ordered-imports": [
+      false
+    ],
+    "member-ordering":[
+      false
+    ],
+    "object-literal-sort-keys":false
+  }
+}

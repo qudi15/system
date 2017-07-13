@@ -5,4 +5,4 @@ import { Base } from "./base";
  */
 export class StoreBase extends Base {
 }
-//# sourceMappingURL=StoreBase.js.map
+//# sourceMappingURL=storeBase.js.map

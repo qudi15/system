@@ -1,16 +1,20 @@
 
+interface IWindowWithSystemJS extends Window {
+    SystemJS: any;
+}
+
 /**
  * Class File loader with SystemJs
  */
 export class SystemJsLoader {
-    config(){}
+    public config() {}
 
     /**
      * @public
      * @param {String} namespace - Module namespace.
      * @return {Promise<Object>}
      */
-    load(namespace: string){
-        return (<any>window)['SystemJS'].import(namespace);
+    public load(namespace: string){
+        return (window as IWindowWithSystemJS).SystemJS.import(namespace);
     }
 }

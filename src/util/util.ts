@@ -1,10 +1,11 @@
-export function mixin(...args: any[]){
-    var t = args.shift();
-    var i = 0, len = args.length;
-    
-    while(i < len){
-        let s = args[i];
-        for(let key in s){
+export function mixin(...args: any[]) {
+    const t = args.shift();
+    // tslint:disable-next-line:one-variable-per-declaration
+    let i = 0;
+    const len = args.length;
+    while (i < len) {
+        const s = args[i];
+        for (const key in s) {
             t[key] = s[key];
         }
         i++;

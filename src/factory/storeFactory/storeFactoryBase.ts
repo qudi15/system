@@ -1,12 +1,13 @@
 import { FactoryBase } from "../base";
 import { StoreBase } from "../../base/index";
+import { IStore } from "../../base/storeBase";
 
 /**
  * Class StoreFactoryBase
  * @extends FactoryBase
  */
 export class StoreFactoryBase extends FactoryBase {
-    cache: Array<StoreBase>;
+    protected cache: {[moduleId: string]: Promise<IStore>};
 
     /**
      * @public
@@ -14,13 +15,13 @@ export class StoreFactoryBase extends FactoryBase {
      * @param {String} moduleId - Module id.
      * @return {Promise<StoreBase>}
      */
-    put(constructor: any, moduleId: string){
-        if(!(<any>this.instanceCache)[moduleId]){
-            (<any>this.instanceCache)[moduleId] = this.createStore(moduleId, constructor);
+    public put(constructor: any, moduleId: string): Promise<IStore> {
+        if (!this.cache[moduleId]) {
+            this.cache[moduleId] = this.createStore(moduleId, constructor);
         }
 
-        return (<any>this.instanceCache)[moduleId];
+        return this.cache[moduleId];
     }
 
-    protected createStore(id: string, constructor: Function){}
+    protected createStore(id: string, constructor: Function): any {}
 }

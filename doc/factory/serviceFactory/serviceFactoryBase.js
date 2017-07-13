@@ -6,7 +6,6 @@ import { FactoryBase } from "../base";
 export class ServiceFactoryBase extends FactoryBase {
     constructor() {
         super();
-        window['ServiceFactory'] = this;
     }
     /**
      * @public
@@ -15,13 +14,11 @@ export class ServiceFactoryBase extends FactoryBase {
      * @return {Promise<Function>}
      */
     put(service, moduleId) {
-        var instanceCache = this.instanceCache;
+        const instanceCache = this.instanceCache;
         if (!instanceCache[moduleId]) {
-            instanceCache[moduleId] = {};
+            instanceCache[moduleId] = Promise.resolve(service);
         }
-        var moduleServicesCache = instanceCache[moduleId];
-        moduleServicesCache[service.name] = service;
-        return Promise.resolve(service);
+        return instanceCache[moduleId];
     }
 }
 //# sourceMappingURL=serviceFactoryBase.js.map

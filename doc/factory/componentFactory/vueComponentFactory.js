@@ -1,4 +1,4 @@
-import { ComponentFactoryBase } from './componentFactoryBase';
+import { ComponentFactoryBase } from "./componentFactoryBase";
 import { mixin } from "../../util/util";
 /**
  * Class VueComponentFactory
@@ -8,7 +8,6 @@ export class VueComponentFactory extends ComponentFactoryBase {
     constructor() {
         super();
         this.instanceCache = {};
-        window['componentFactory'] = this;
     }
     /**
      * @public
@@ -17,7 +16,7 @@ export class VueComponentFactory extends ComponentFactoryBase {
      * @return {VueComponentInstance} Vue component instance.
      */
     boot(options, selector) {
-        return new window['Vue'](options).$mount(selector);
+        return new window.Vue(options).$mount(selector);
     }
     /**
      * @public
@@ -27,17 +26,18 @@ export class VueComponentFactory extends ComponentFactoryBase {
      * @return {Object} New component options.
      */
     changeComponentToModuleView(options, service, store) {
-        var tag = options.name;
+        const tag = options.name;
         service = service ? service : {};
         store = store ? store : {};
         return {
-            template: `<div><${tag} :service="service" :store="store"></${tag}></div>`,
-            data: function () {
+            name: "",
+            data: () => {
                 return {
                     service,
                     store
                 };
-            }
+            },
+            template: `<div><${tag} :service="service" :store="store"></${tag}></div>`
         };
     }
     /**
@@ -47,15 +47,14 @@ export class VueComponentFactory extends ComponentFactoryBase {
      * @return {Promise<ComponentBase>}
      */
     createComponent(tagName, constructor) {
-        var ins = new constructor();
-        this.instanceCache[tagName] = Promise.resolve(ins);
-        return this.instanceCache[tagName];
+        const ins = new constructor();
+        return Promise.resolve(ins);
     }
     /**
      * @protected
-     * @param {Object} options - Component options.
-     * @param {Function} constructor - Component constructor.
-     * @return {Object} New component options.
+     * @param {IComponentOptions} options - Component options.
+     * @param {IComponentConstructor} constructor - Component constructor.
+     * @return {IComponentOptions} New component options.
      */
     exchange(options, constructor) {
         mixin(options, constructor.prototype.options);
@@ -65,30 +64,32 @@ export class VueComponentFactory extends ComponentFactoryBase {
     }
     /**
      * @private
-     * @param {Object} options - Component options.
-     * @return {Object} New component options.
+     * @param {IComponentOptions} options - Component options.
+     * @return {IComponentOptions} New component options.
      */
     exchangeData(options) {
-        var data = options.data;
-        data && (options.data = data);
+        const data = options.data;
+        if (data) {
+            options.data = data;
+        }
         return options;
     }
     /**
      * @private
-     * @param {Object} options - Component options.
-     * @return {Object} New component options.
+     * @param {IComponentOptions} options - Component options.
+     * @return {IComponentOptions} New component options.
      */
     cloneLifecycleHook(options) {
-        ['beforeCreate',
-            'created',
-            'beforeMount',
-            'mounted',
-            'beforeUpdate',
-            'updated',
-            'activated',
-            'deactivated',
-            'beforeDestroy',
-            'destroyed'].forEach((hook) => {
+        ["beforeCreate",
+            "created",
+            "beforeMount",
+            "mounted",
+            "beforeUpdate",
+            "updated",
+            "activated",
+            "deactivated",
+            "beforeDestroy",
+            "destroyed"].forEach((hook) => {
             if (options[hook] != null) {
                 options[hook] = options[hook];
             }
@@ -102,7 +103,7 @@ export class VueComponentFactory extends ComponentFactoryBase {
      * @return {Function} Component constructor.
      */
     register(tagName, options) {
-        return window['Vue'].component(tagName, options);
+        return window.Vue.component(tagName, options);
     }
 }
 //# sourceMappingURL=vueComponentFactory.js.map

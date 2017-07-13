@@ -17,7 +17,7 @@ ComponentBase,
  * Component
  * See {@link ComponentBase}
  */
-Component } from './componentBase';
+Component } from "./componentBase";
 export { 
 /**
  * ModuleBase
@@ -28,7 +28,7 @@ ModuleBase,
  * Module
  * See {@link ModuleBase}
  */
-Module } from './moduleBase';
+Module } from "./moduleBase";
 export { 
 /**
  * StoreBase

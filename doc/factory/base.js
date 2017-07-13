@@ -5,7 +5,19 @@ import { Base } from "../base/index";
  */
 export class FactoryBase extends Base {
     put(namespance, parent) { }
-    del() { }
+    /**
+     * @public
+     * @param {String} id - id
+     * @description Delete from cache.
+     */
+    del(id) {
+        delete this.cache[id];
+        delete this.instanceCache[id];
+    }
+    /**
+     * @public
+     * @description Clear all cache.
+     */
     clear() { }
     constructor() {
         super();
@@ -16,6 +28,7 @@ export class FactoryBase extends Base {
      * @public
      * @param {String} id - id
      * @return {Object}
+     * @description Get from cache.
      */
     get(id) {
         return {

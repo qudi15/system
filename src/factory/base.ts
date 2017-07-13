@@ -5,13 +5,29 @@ import { Base } from "../base/index";
  * @extends Base
  */
 export class FactoryBase extends Base {
-    cache: Object;
-    instanceCache: Object;
-    put(namespance: any, parent?: any): any {}
-    del(){}
-    clear(){}
 
-    constructor(){
+    protected cache: {[id: string]: Promise<any>};
+    protected instanceCache: {[id: string]: Promise<any>};
+
+    public put(namespance: any, parent?: any): any {}
+
+    /**
+     * @public
+     * @param {String} id - id
+     * @description Delete from cache.
+     */
+    public del(id: string) {
+        delete this.cache[id];
+        delete this.instanceCache[id];
+    }
+
+    /**
+     * @public
+     * @description Clear all cache.
+     */
+    public clear() {}
+
+    public constructor() {
         super();
         this.cache = {};
         this.instanceCache = {};
@@ -21,11 +37,12 @@ export class FactoryBase extends Base {
      * @public
      * @param {String} id - id
      * @return {Object}
+     * @description Get from cache.
      */
-    get(id: string){
+    public get(id: string) {
         return {
-            instance: (<any>this.instanceCache)[id],
-            constructor: (<any>this.cache)[id]
+            instance: this.instanceCache[id],
+            constructor: this.cache[id]
         };
     }
 }

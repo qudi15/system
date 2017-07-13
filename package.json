@@ -12,14 +12,12 @@
   "license": "MIT",
   "dependencies": {
     "@types/systemjs": "^0.20.2",
-    "jsdoc": "^3.5.0",
     "systemjs": "^0.20.14",
-    "tslint": "^5.5.0",
-    "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.4.1",
     "vue": "^2.3.4"
   },
   "devDependencies": {
-    "vrsource-tslint-rules": "^5.1.0"
+    "tslint": "^5.5.0",
+    "jsdoc": "^3.5.0"
   }
 }

@@ -3,7 +3,7 @@ import { Base } from "./base";
  * @decorator Component
  */
 export function Component(options) {
-    return function (constructor) {
+    return (constructor) => {
         constructor.prototype.options = options;
     };
 }

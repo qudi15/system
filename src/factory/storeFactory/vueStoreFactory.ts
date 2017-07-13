@@ -1,4 +1,9 @@
-import { StoreFactoryBase } from './storeFactoryBase';
+import { StoreFactoryBase } from "./storeFactoryBase";
+import { IStore } from "../../base/storeBase";
+
+interface IWindowWithVuex extends Window {
+    Vuex: any;
+}
 
 /**
  * Class VueStoreFactory
@@ -11,11 +16,10 @@ export class VueStoreFactory extends StoreFactoryBase {
      * @param {String} moduleId - Module id.
      * @param {Function} constructor - Store constructor.
      */
-    protected createStore(moduleId: string, constructor: any){
-        let ins = new constructor();
-        (<any>this.cache)[moduleId] = Promise.resolve(ins);
-        (<any>this.instanceCache)[moduleId] = Promise.resolve(new (<any>window)['Vuex'].Store(ins));
-        return (<any>this.instanceCache)[moduleId];
+    protected createStore(moduleId: string, constructor: any): Promise<IStore> {
+        const ins = new constructor();
+        this.cache[moduleId] = Promise.resolve(ins);
+        this.instanceCache[moduleId] = Promise.resolve(new (window as IWindowWithVuex).Vuex.Store(ins));
+        return this.instanceCache[moduleId];
     }
-
 }

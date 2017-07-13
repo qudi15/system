@@ -4,23 +4,24 @@
  * @class
  * @classdesc base of every class
  */
+
 export class Base {
     /**
      * life cycle hook.
      */
-    beforeCreate(){}
+    public beforeCreate() {}
     /**
      * life cycle hook.
      */
-    created(){}
+    public created() {}
 
     /**
      * life cycle hook.
      */
-    beforeDestroy(){}
+    public beforeDestroy() {}
 
     /**
      * life cycle hook.
      */
-    destroyed(){}
+    public destroyed() {}
 }

@@ -6,22 +6,21 @@ import { FactoryBase } from "../base";
  */
 export class ServiceFactoryBase extends FactoryBase {
 
-    constructor(){
+    protected instanceCache: {[serviceName: string]: Promise<Function>};
+
+    constructor() {
         super();
-        (<any>window)['ServiceFactory'] = this;
     }
 
     /**
      * @public
      * @param {Function} service - Service function.
      * @param {String} moduleId - Module id.
-     * @return {Promise<Function>} 
+     * @return {Promise<Function>}
      */
-    put(service: Function, moduleId: string): Promise<any>{
-        var instanceCache = this.instanceCache;
-        if(!(<any>instanceCache)[moduleId]){(<any>instanceCache)[moduleId] = {};}
-        var moduleServicesCache = (<any>instanceCache)[moduleId];
-        moduleServicesCache[(<any>service).name] = service;
-        return Promise.resolve(service);
+    public put(service: Function, moduleId: string): Promise<any> {
+        const instanceCache = this.instanceCache;
+        if (!instanceCache[moduleId]) { instanceCache[moduleId] = Promise.resolve(service); }
+        return instanceCache[moduleId];
     }
 }

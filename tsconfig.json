@@ -4,14 +4,14 @@
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
-        // "outDir": "../app/node_modules/system/dist",
-        "outDir": "dist",
+        "outDir": "../app/node_modules/system/dist",
+        // "outDir": "dist",
         "sourceMap": true,
         "types": [
             "systemjs"
         ],
         "baseUrl": ".",
-        "lib": ["dom", "es2015.promise", "es5"],
+        "lib": ["dom", "es5", "esnext", "es2015", "es6", "es7", "es2016"],
         "target": "es5",
         "experimentalDecorators": true
     },

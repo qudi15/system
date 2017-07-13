@@ -1,6 +1,10 @@
-import { ComponentFactoryBase } from './componentFactoryBase';
+import { ComponentFactoryBase } from "./componentFactoryBase";
 import { mixin } from "../../util/util";
+import { IComponentOptions, IComponentConstructor, ComponentBase } from "../../base/componentBase";
 
+interface IWindowWithVue extends Window {
+    Vue: any;
+}
 
 /**
  * Class VueComponentFactory
@@ -8,12 +12,11 @@ import { mixin } from "../../util/util";
  */
 export class VueComponentFactory extends ComponentFactoryBase {
 
-    instanceCache: Object;
+    protected instanceCache: {[tagName: string]: Promise<IComponentOptions>};
 
-    constructor(){
+    constructor() {
         super();
         this.instanceCache = {};
-        (<any>window)['componentFactory'] = this;
     }
     /**
      * @public
@@ -21,8 +24,8 @@ export class VueComponentFactory extends ComponentFactoryBase {
      * @param {String} selector - querySelector.
      * @return {VueComponentInstance} Vue component instance.
      */
-    boot(options: any, selector: string){
-        return new (<any>window)['Vue'](options).$mount(selector);
+    public boot(options: any, selector: string) {
+        return new (window as IWindowWithVue).Vue(options).$mount(selector);
     }
 
     /**
@@ -32,40 +35,40 @@ export class VueComponentFactory extends ComponentFactoryBase {
      * @param? {Object} store - Stores need to be passed on to main component.
      * @return {Object} New component options.
      */
-    changeComponentToModuleView(options: any, service?: Object, store?: Object){
-        var tag:string = options.name;
+    public changeComponentToModuleView(options: any, service?: Object, store?: Object) {
+        const tag: string = options.name;
         service = service ? service : {};
         store = store ? store : {};
         return {
-            template: `<div><${tag} :service="service" :store="store"></${tag}></div>`,
-            data: function(){
+            name: "",
+            data: () => {
                 return {
                     service,
                     store
-                }
-            }
-        };
+                };
+            },
+            template: `<div><${tag} :service="service" :store="store"></${tag}></div>`
+        } as IComponentOptions;
     }
-    
+
     /**
      * @protected
      * @param {String} tagName - Component tag name.
      * @param {Function} constructor - Component constructor.
      * @return {Promise<ComponentBase>}
      */
-    protected createComponent(tagName: string, constructor: Function): Promise<any> {
-        var ins = new (<any>constructor)();
-        (<any>this.instanceCache)[tagName] = Promise.resolve(ins);
-        return (<any>this.instanceCache)[tagName];
+    protected createComponent(tagName: string, constructor: IComponentConstructor): Promise<IComponentOptions> {
+        const ins: IComponentOptions = new (constructor as any)();
+        return Promise.resolve(ins);
     }
 
     /**
      * @protected
-     * @param {Object} options - Component options.
-     * @param {Function} constructor - Component constructor.
-     * @return {Object} New component options.
+     * @param {IComponentOptions} options - Component options.
+     * @param {IComponentConstructor} constructor - Component constructor.
+     * @return {IComponentOptions} New component options.
      */
-    protected exchange(options: any, constructor: Function){
+    protected exchange(options: IComponentOptions, constructor: IComponentConstructor) {
         mixin(options, constructor.prototype.options);
         this.exchangeData(options);
         this.cloneLifecycleHook(options);
@@ -74,35 +77,35 @@ export class VueComponentFactory extends ComponentFactoryBase {
 
     /**
      * @private
-     * @param {Object} options - Component options.
-     * @return {Object} New component options.
+     * @param {IComponentOptions} options - Component options.
+     * @return {IComponentOptions} New component options.
      */
-    private exchangeData(options: any){
-        var data = options.data;
-        data && (options.data = data);
+    private exchangeData(options: any) {
+        const data = options.data;
+        if (data) { options.data = data; }
         return options;
     }
 
     /**
      * @private
-     * @param {Object} options - Component options.
-     * @return {Object} New component options.
+     * @param {IComponentOptions} options - Component options.
+     * @return {IComponentOptions} New component options.
      */
-    private cloneLifecycleHook(options: any){
-        ['beforeCreate',
-        'created',
-        'beforeMount',
-        'mounted',
-        'beforeUpdate',
-        'updated',
-        'activated',
-        'deactivated',
-        'beforeDestroy',
-        'destroyed'].forEach((hook: string) => {
-            if(options[hook] != null){
+    private cloneLifecycleHook(options: any) {
+        ["beforeCreate",
+        "created",
+        "beforeMount",
+        "mounted",
+        "beforeUpdate",
+        "updated",
+        "activated",
+        "deactivated",
+        "beforeDestroy",
+        "destroyed"].forEach((hook: string) => {
+            if (options[hook] != null) {
                 options[hook] = options[hook];
             }
-        })
+        });
         return options;
     }
 
@@ -112,7 +115,7 @@ export class VueComponentFactory extends ComponentFactoryBase {
      * @param {Object} options - Component options.
      * @return {Function} Component constructor.
      */
-    protected register(tagName: string, options: Object){
-        return (<any>window)['Vue'].component(tagName, options);
+    protected register(tagName: string, options: IComponentOptions) {
+        return (window as IWindowWithVue).Vue.component(tagName, options);
     }
 }

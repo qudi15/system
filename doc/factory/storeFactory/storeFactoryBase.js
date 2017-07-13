@@ -11,10 +11,10 @@ export class StoreFactoryBase extends FactoryBase {
      * @return {Promise<StoreBase>}
      */
     put(constructor, moduleId) {
-        if (!this.instanceCache[moduleId]) {
-            this.instanceCache[moduleId] = this.createStore(moduleId, constructor);
+        if (!this.cache[moduleId]) {
+            this.cache[moduleId] = this.createStore(moduleId, constructor);
         }
-        return this.instanceCache[moduleId];
+        return this.cache[moduleId];
     }
     createStore(id, constructor) { }
 }

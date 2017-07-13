@@ -3,42 +3,43 @@
  * @module system/base
  */
 
-export { 
-    /** 
+export {
+    /**
      * Base
      * See {@link Base}
      */
-    Base 
+    Base
 } from "./base";
-export { 
-    /** 
+export {
+    /**
      * ComponentBase
      * See {@link ComponentBase}
      */
-    ComponentBase, 
-    /** 
+    ComponentBase,
+    /**
      * Component
      * See {@link ComponentBase}
      */
-    Component 
-} from './componentBase';
-export { 
-    /** 
+    Component
+} from "./componentBase";
+export {
+    /**
      * ModuleBase
      * See {@link ModuleBase}
      */
-    ModuleBase, 
-    /** 
+    ModuleBase,
+    /**
      * Module
      * See {@link ModuleBase}
      */
-    Module 
-} from './moduleBase';
-export { 
-    /** 
+    Module,
+    IModuleOptions,
+    IModule
+} from "./moduleBase";
+export {
+    /**
      * StoreBase
      * See {@link StoreBase}
      */
-    StoreBase 
+    StoreBase
 } from "./StoreBase";
- 

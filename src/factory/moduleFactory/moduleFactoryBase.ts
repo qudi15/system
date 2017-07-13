@@ -1,9 +1,10 @@
-import { FactoryBase } from '../base';
-import { ModuleBase } from '../../base/index';
+import { FactoryBase } from "../base";
+import { ModuleBase } from "../../base/index";
 import { Loader } from "../../loader/index";
+import { IModuleConstructor, IModuleOptions, IModule } from "../../base/moduleBase";
 
-function checkModuleExists(id: string, cache: Object){
-    return typeof (<any>cache)[id] == undefined;
+function checkModuleExists(id: string, cache: {[moduleId: string]: Promise<IModule>}) {
+    return !!cache[id];
 }
 
 /**
@@ -12,18 +13,20 @@ function checkModuleExists(id: string, cache: Object){
  */
 export class ModuleFactoryBase extends FactoryBase {
 
-    constructor(protected loader: Loader){
+    protected cache: {[moduleId: string]: Promise<IModule>};
+
+    constructor(protected loader: Loader) {
         super();
     }
 
     /**
      * @public
      * @param {String} moduleId - Module Id
-     * @return {Promise<ModuleBase>}
+     * @return {Promise<IModuleConstructor>}
      */
     public put(moduleId: string): any {
-        if(!checkModuleExists(moduleId, this.cache)){
-            (<any>this.cache)[moduleId] = this.loadModule(moduleId).then((module: Function) => {
+        if (!checkModuleExists(moduleId, this.cache)) {
+            this.cache[moduleId] = this.loadModule(moduleId).then((module: IModuleConstructor) => {
                 return Promise.all([
                     this.handleDeps(module),
                     this.createModule(module),
@@ -32,44 +35,43 @@ export class ModuleFactoryBase extends FactoryBase {
                     this.createServices(module),
                     this.createStore(module)
                 ]).then(([deps, moduleInstance]) => {
-                    return this.changeComponentToModuleView(moduleInstance, deps);
+                    return this.changeComponentToModuleView(moduleInstance, deps) as IModule;
                 });
             });
         }
-        return (<any>this.cache)[moduleId];
+        return this.cache[moduleId];
     }
 
-    protected createStore(constructor: Function){}
+    protected createStore(constructor: IModuleConstructor) {}
 
-    protected changeComponentToModuleView(moduleInstance: any, deps: Array<any>){}
+    protected changeComponentToModuleView(moduleInstance: IModule, deps: IModule[]): any {}
 
-    protected createServices(constructor: Function){}
+    protected createServices(constructor: IModuleConstructor) {}
 
-    protected createMainComponent(constructor: Function){}
+    protected createMainComponent(constructor: IModuleConstructor) {}
 
     /**
      * @protected
-     * @param {Function} constructor - Module constructor.
-     * @return {Promise<ModuleBase[]>}
+     * @param {IModuleConstructor} constructor - Module constructor.
+     * @return {Promise<IModule[]>}
      */
-    protected handleDeps(constructor: Function){
-        var options = constructor.prototype.options;
-        var deps = options.modules || [];
+    protected handleDeps(constructor: IModuleConstructor) {
+        const options = constructor.prototype.options;
+        const deps = options.modules || [];
         return Promise.all(deps.map((namespace: string) => this.put(namespace)));
     }
 
     /**
      * @protected
      * @param {String} moduleId - Module Id
-     * @return {Promise<ModuleBase>}
+     * @return {Promise<IModuleConstructor>}
      */
-    protected loadModule(moduleId: string) : Promise<any> {
-        return this.loader.load(moduleId).then(( output: any ) => output.default);
+    protected loadModule(moduleId: string): Promise<IModuleConstructor> {
+        return this.loader.load(moduleId).then(( output: any ) => output.default as IModuleConstructor);
     }
 
-    protected createModule(constructor: Function): any {}
+    protected createModule(constructor: IModuleConstructor): any {}
 
-    protected createComponents(constructor: Function) : any{}
-
+    protected createComponents(constructor: IModuleConstructor): any {}
 
 }

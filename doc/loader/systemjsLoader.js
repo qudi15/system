@@ -9,7 +9,7 @@ export class SystemJsLoader {
      * @return {Promise<Object>}
      */
     load(namespace) {
-        return window['SystemJS'].import(namespace);
+        return window.SystemJS.import(namespace);
     }
 }
 //# sourceMappingURL=systemjsLoader.js.map
