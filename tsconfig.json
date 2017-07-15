@@ -4,8 +4,7 @@
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
-        "outDir": "../app/node_modules/system/dist",
-        // "outDir": "dist",
+        "outDir": "dist",
         "sourceMap": true,
         "types": [
             "systemjs"

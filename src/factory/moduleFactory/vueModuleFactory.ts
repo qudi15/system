@@ -39,6 +39,7 @@ export class VueModuleFactory extends ModuleFactoryBase {
         this.componentFactory = args.componentFactory;
         this.serviceFactory = args.serviceFactory;
         this.storeFactory = args.storeFactory;
+        (window as any).moduleFactory = this;
     }
 
     /**

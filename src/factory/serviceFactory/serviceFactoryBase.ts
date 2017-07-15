@@ -6,10 +6,13 @@ import { FactoryBase } from "../base";
  */
 export class ServiceFactoryBase extends FactoryBase {
 
-    protected instanceCache: {[serviceName: string]: Promise<Function>};
+    protected instanceCache: {
+        [moduleId: string]: {[serviceName: string]: Promise<Function>}
+    };
 
     constructor() {
         super();
+        (window as any).serviceFactory = this;
     }
 
     /**
@@ -20,7 +23,10 @@ export class ServiceFactoryBase extends FactoryBase {
      */
     public put(service: Function, moduleId: string): Promise<any> {
         const instanceCache = this.instanceCache;
-        if (!instanceCache[moduleId]) { instanceCache[moduleId] = Promise.resolve(service); }
-        return instanceCache[moduleId];
+        if (!instanceCache[moduleId]) {
+            instanceCache[moduleId] = {};
+        }
+        instanceCache[moduleId][service.name] = Promise.resolve(service);
+        return instanceCache[moduleId][service.name];
     }
 }

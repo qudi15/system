@@ -6,8 +6,8 @@ import { Base } from "../base/index";
  */
 export class FactoryBase extends Base {
 
-    protected cache: {[id: string]: Promise<any>};
-    protected instanceCache: {[id: string]: Promise<any>};
+    protected cache: any;
+    protected instanceCache: any;
 
     public put(namespance: any, parent?: any): any {}
 

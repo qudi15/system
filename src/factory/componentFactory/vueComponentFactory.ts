@@ -17,6 +17,7 @@ export class VueComponentFactory extends ComponentFactoryBase {
     constructor() {
         super();
         this.instanceCache = {};
+        (window as any).componentFactory = this;
     }
     /**
      * @public
