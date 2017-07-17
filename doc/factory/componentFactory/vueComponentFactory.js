@@ -8,6 +8,7 @@ export class VueComponentFactory extends ComponentFactoryBase {
     constructor() {
         super();
         this.instanceCache = {};
+        window.componentFactory = this;
     }
     /**
      * @public

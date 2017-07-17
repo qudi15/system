@@ -18,6 +18,7 @@ export class VueModuleFactory extends ModuleFactoryBase {
         this.componentFactory = args.componentFactory;
         this.serviceFactory = args.serviceFactory;
         this.storeFactory = args.storeFactory;
+        window.moduleFactory = this;
     }
     /**
      * @protected
